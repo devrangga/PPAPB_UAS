@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/custom_card"
+    app:cardElevation="12dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginHorizontal="24dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingVertical="24dp"
+        android:paddingHorizontal="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.5"
+            android:orientation="vertical"
+            android:id="@+id/constraintGuideLine"/>
+        <ImageView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/eachItemImgViewAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/ss"
+            android:scaleType="centerCrop"
+            android:elevation="12dp"/>
+
+        <TextView
+            android:layout_marginTop="24dp"
+            android:id="@+id/eachItemTextOneAdmin"
+            app:layout_constraintTop_toBottomOf="@id/eachItemImgViewAdmin"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Film Testing"
+            android:textColor="@color/text_primary"
+            android:fontFamily="@font/poppins_extrabold"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:id="@+id/eachItemTextTwoAdmin"
+            app:layout_constraintTop_toBottomOf="@id/eachItemTextOneAdmin"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A Film By Deza Studio"
+            android:textColor="@color/text_secondary"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="12dp"/>
+
+        <LinearLayout
+            android:id="@+id/eachItemStar"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="84dp"
+            app:layout_constraintStart_toEndOf="@id/constraintGuideLine"
+            app:layout_constraintTop_toBottomOf="@id/eachItemImgViewAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_marginRight="12dp"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/baseline_star_24"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4.9"
+                android:textColor="@color/text_secondary"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="18dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/eachItemIcons"
+            android:layout_marginLeft="84dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toEndOf="@id/constraintGuideLine"
+            app:layout_constraintTop_toBottomOf="@id/eachItemStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/eachItemEditButton"
+                android:background="@drawable/filled_grey"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="4dp"
+                android:layout_marginRight="12dp"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/baseline_mode_edit_outline_24"/>
+            <ImageView
+                android:id="@+id/eachItemDeleteButton"
+                android:background="@drawable/filled_grey"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="4dp"
+                android:layout_marginLeft="6dp"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/baseline_delete_24"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

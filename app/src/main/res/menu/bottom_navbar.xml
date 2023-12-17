@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/userMainListtt"
+        android:title="List"
+        android:icon="@drawable/baseline_format_list_numbered_24"
+        />
+    <item
+        android:id="@+id/userProfileee"
+        android:title="Profile"
+        android:icon="@drawable/baseline_person_24"
+        />
+</menu>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/homescreen_bg"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:paddingHorizontal="36dp"
+        android:layout_marginBottom="144dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Find Your Wow Home."
+            android:gravity="center"
+            android:fontFamily="@font/poppins_extrabold"
+            android:textSize="24dp"/>
+        <TextView
+            android:layout_marginTop="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please feel free to enjoy your time while chooosing our great collection."
+            android:gravity="center"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="18dp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/getStartedButton"
+            android:textAllCaps="false"
+            android:layout_marginTop="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Started"
+            android:letterSpacing=".05"
+            android:background="@drawable/filled_blue"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:fontFamily="@font/poppins_medium"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="48dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
