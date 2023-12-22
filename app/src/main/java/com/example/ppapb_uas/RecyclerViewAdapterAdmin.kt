@@ -15,8 +15,23 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 
-class RecyclerViewAdapterAdmin(private val itemList : ArrayList<Item>) : RecyclerView
+class RecyclerViewAdapterAdmin(private var itemList : ArrayList<Item>) : RecyclerView
     .Adapter<RecyclerViewAdapterAdmin.MyViewHolder>() {
+
+
+    companion object {
+        private lateinit var adapter: RecyclerViewAdapterAdmin
+
+        fun initAdapterInstance(adapterInstance: RecyclerViewAdapterAdmin) {
+            adapter = adapterInstance
+        }
+
+        fun setFilteredList(filteredList: ArrayList<Item>) {
+            adapter.itemList = filteredList
+            adapter.notifyDataSetChanged() // Notify the adapter that the data has changed
+        }
+    }
+
 
     override fun getItemCount(): Int {
         return itemList.size
@@ -89,6 +104,5 @@ class RecyclerViewAdapterAdmin(private val itemList : ArrayList<Item>) : Recycle
             Log.e("RecyclerViewAdapterAdmin", "Error deleting image: ${it.message}")
         }
     }
-
 
 }

@@ -26,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
 class UserProfileFragment : Fragment() {
     private lateinit var binding : FragmentUserProfileBinding
     private lateinit var auth : FirebaseAuth
-    private lateinit var sharePreferences : SharedPreferences
+    private lateinit var sharedPreferences : SharedPreferences
 
     private var param1: String? = null
     private var param2: String? = null
@@ -45,13 +45,18 @@ class UserProfileFragment : Fragment() {
     ): View? {
         binding = FragmentUserProfileBinding.inflate(layoutInflater)
         auth = Firebase.auth
-        sharePreferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE)
+        sharedPreferences = requireActivity().getSharedPreferences("user_data", Context
+            .MODE_PRIVATE)
 
-
-        binding.userProfileEmail.setText(auth.currentUser!!.email)
-        binding.userProfileUsername.setText(sharePreferences.getString("username","username"))
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            binding.userProfileEmail.setText(currentUser.email)
+        }
+        binding.userProfileUsername.setText(sharedPreferences.getString("username","username"))
 
         binding.userProfileSignoutButton.setOnClickListener{
+            sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
+
             startActivity(Intent(requireActivity(),MainActivity::class.java))
             Firebase.auth.signOut()
         }

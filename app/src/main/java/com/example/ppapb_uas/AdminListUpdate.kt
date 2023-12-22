@@ -21,7 +21,7 @@ class AdminListUpdate : AppCompatActivity() {
     private lateinit var binding: ActivityAdminListUpdateBinding
     private lateinit var database: DatabaseReference
     private lateinit var storageReference: StorageReference
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri ?= null
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -73,7 +73,6 @@ class AdminListUpdate : AppCompatActivity() {
         if (imageUri != null) {
             // Generate a unique ID for the image
             val imageId = Uri.parse(intent.getStringExtra("imgId")).lastPathSegment?.removePrefix("images/")
-            Log.d("msg","ID NYA TUUUU $imageId")
 
             // Upload image to Firebase Storage with the generated ID
             storageReference = FirebaseStorage.getInstance().reference.child("images/$imageId")
@@ -90,6 +89,7 @@ class AdminListUpdate : AppCompatActivity() {
                             binding.adminListUpdateAuthor.text!!.clear()
                             binding.adminListUpdateDescription.text!!.clear()
                             startActivity(Intent(this,AdminListMain::class.java))
+                            startActivity(Intent(this@AdminListUpdate,AdminListMain::class.java))
                             Toast.makeText(this, "Data Uploaded Successfully", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener {
@@ -116,6 +116,7 @@ class AdminListUpdate : AppCompatActivity() {
                     binding.adminListUpdateTitle.text!!.clear()
                     binding.adminListUpdateAuthor.text!!.clear()
                     binding.adminListUpdateDescription.text!!.clear()
+                    startActivity(Intent(this@AdminListUpdate,AdminListMain::class.java))
                     Toast.makeText(this, "Data Updated Successfully", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener {

@@ -9,8 +9,31 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.ppapb_uas.database.Note
 
-class RecyclerViewAdapterUser(private val itemList : ArrayList<Item>) : RecyclerView.Adapter<RecyclerViewAdapterUser.MyViewHolder>() {
+class RecyclerViewAdapterUser(private var itemList: List<Note>) : RecyclerView
+    .Adapter<RecyclerViewAdapterUser.MyViewHolder>() {
+
+//    companion object {
+//        private lateinit var adapter: RecyclerViewAdapterUser
+//
+//        fun initAdapterInstance(adapterInstance: RecyclerViewAdapterUser) {
+//            adapter = adapterInstance
+//        }
+//
+//        fun setFilteredList(filteredList: ArrayList<Item>) {
+//            adapter.itemList = filteredList
+//            adapter.notifyDataSetChanged() // Notify the adapter that the data has changed
+//        }
+//    }
+
+
+
+
+
+
+
+
 
     class MyViewHolder(itemList : View) : RecyclerView.ViewHolder(itemList){
         val title : TextView = itemList.findViewById(R.id.eachItemTextOneUser)
@@ -48,5 +71,17 @@ class RecyclerViewAdapterUser(private val itemList : ArrayList<Item>) : Recycler
     override fun getItemCount(): Int {
         return itemList.size
     }
+
+
+
+    fun updateData(newList: List<Note>) {
+        itemList = newList
+        notifyDataSetChanged()
+    }
+
+
+
+
+
 
 }

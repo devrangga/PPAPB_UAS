@@ -54,44 +54,62 @@ class LoginFragment : Fragment() {
         val password: TextInputEditText = binding.loginPasswordText
         val loginBtn : Button = binding.loginButton
 
-        // Check if user credentials are saved in SharedPreferences
+        // Check if user is already logged in using SharedPreferences
         val sharedPreferences = requireActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE)
-        val savedEmail = sharedPreferences.getString("email", null)
-        val savedPassword = sharedPreferences.getString("password", null)
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         val editor = sharedPreferences.edit()
 
-        loginBtn.setOnClickListener {
-            if (email.text.toString().isEmpty()) {
-                Toast.makeText(requireActivity(), "Please Fill the Email!", Toast.LENGTH_SHORT).show()
-            }
-            if (password.text.toString().isEmpty()) {
-                Toast.makeText(requireActivity(), "Please Fill the Email!", Toast.LENGTH_SHORT).show()
-            }
-
-            auth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
-                .addOnCompleteListener(requireActivity()) { taskk ->
-                    val currentUser = auth.currentUser
-                    if (taskk.isSuccessful) {
-                        if (currentUser != null) {
-                            // Save user credentials in SharedPreferences
-                            // Check if the user is an admin based on their email address
-                            if (currentUser.email == "admindev@gmail.com") {
-                                // User is an admin, redirect to Admin activity
-                                editor.putString("email", email.text.toString())
-                                editor.putString("password", password.text.toString())
-                                editor.apply()
-                                startActivity(Intent(requireActivity(), AdminListMain::class.java))
-                            } else {
-                                // User is not an admin, redirect to User activity
-                                startActivity(Intent(requireActivity(), UserMainMenu::class.java))
-                            }
-                        }
-                    } else {
-                        Toast.makeText(requireActivity(), "Login Failed", Toast.LENGTH_SHORT).show()
-                    }
+        if (isLoggedIn) {
+            // User is already logged in, navigate to the appropriate screen
+            val userType = sharedPreferences.getString("userType", "guest")
+            navigateToMainMenu(userType)
+        } else {
+            loginBtn.setOnClickListener {
+                if (email.text.toString().isEmpty()) {
+                    Toast.makeText(requireActivity(), "Please Fill the Email!", Toast.LENGTH_SHORT).show()
                 }
+                if (password.text.toString().isEmpty()) {
+                    Toast.makeText(requireActivity(), "Please Fill the Email!", Toast.LENGTH_SHORT).show()
+                }
+
+                auth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
+                    .addOnCompleteListener(requireActivity()) { taskk ->
+                        val currentUser = auth.currentUser
+                        if (taskk.isSuccessful) {
+                            if (currentUser != null) {
+                                val userType = if(currentUser.email == "admindev@gmail.com"){
+                                    "admin"
+                                } else {
+                                    "user"
+                                }
+
+                                editor.putBoolean("isLoggedIn", true)
+                                editor.putString("userType", userType)
+                                editor.apply()
+
+                                // Navigate to the appropriate screen
+                                navigateToMainMenu(userType)
+
+                            }
+                        } else {
+                            Toast.makeText(requireActivity(), "Login Failed", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            }
         }
+
+
         return binding.root
+    }
+
+    private fun navigateToMainMenu(userType: String?) {
+
+        val intentTo = when (userType) {
+            "user" -> Intent(requireActivity(), UserMainMenu::class.java)
+            "admin" -> Intent(requireActivity(), AdminListMain::class.java)
+            else -> null
+        }
+        startActivity(intentTo!!)
     }
 
     companion object {

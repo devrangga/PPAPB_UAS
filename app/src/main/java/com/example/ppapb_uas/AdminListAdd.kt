@@ -2,17 +2,22 @@ package com.example.ppapb_uas
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.transition.Transition
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
 import com.example.ppapb_uas.databinding.ActivityAdminListAddBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -27,6 +32,9 @@ class AdminListAdd : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private lateinit var storageReference: StorageReference
     private lateinit var imageUri: Uri
+
+    private val channelId = "NOTIFICATION_CHANNEL_ID"
+    private val notifId = 90
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -43,6 +51,8 @@ class AdminListAdd : AppCompatActivity() {
         binding = ActivityAdminListAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         binding.adminListAddButton.setOnClickListener {
             uploadData(imageUri)
         }
@@ -52,7 +62,7 @@ class AdminListAdd : AppCompatActivity() {
         }
     }
 
-    private fun uploadData(imageUri: Uri? = null) {
+        private fun uploadData(imageUri: Uri? = null) {
         val title: String = binding.adminListAddTitle.text.toString()
         val author: String = binding.adminListAddAuthor.text.toString()
         val description: String = binding.adminListAddDescription.text.toString()
@@ -77,8 +87,7 @@ class AdminListAdd : AppCompatActivity() {
                             binding.adminListAddAuthor.text!!.clear()
                             binding.adminListAddDescription.text!!.clear()
 
-//                            showNotification("Data Uploaded Successfully")
-
+                            notifWithImage(imageUrl.toString())
                             startActivity(Intent(this,AdminListMain::class.java))
                             Toast.makeText(this, "Data Uploaded Successfully", Toast.LENGTH_SHORT).show()
                         }
@@ -94,37 +103,35 @@ class AdminListAdd : AppCompatActivity() {
         }
     }
 
-    private fun showNotification(message: String) {
-        val channelId = "MyChannelId"
-        val notificationId = 1
+    private fun notifWithImage(downloadUrl: String) {
+        val notifManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        createNotificationChannel()
+        // Download the image from Firebase Storage using Glide or any other image loading library
+        Glide.with(this@AdminListAdd)
+            .asBitmap()
+            .load(downloadUrl) // Use the downloadUrl here
+            .into(object : SimpleTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+                ) {
+                    // Build the notification with the downloaded image
+                    val builder = NotificationCompat.Builder(this@AdminListAdd, channelId)
+                        .setSmallIcon(R.drawable.baseline_notifications_24)
+                        .setContentTitle("Tontonin")
+                        .setContentText("Images updated successfully")
+                        .setStyle(
+                            NotificationCompat.BigPictureStyle()
+                                .bigPicture(resource)
+                        )
+                        .setAutoCancel(true)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-        val builder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.baseline_notifications_24)
-            .setContentTitle("PPAPB UAS Notification")
-            .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-//        with(NotificationManagerCompat.from(this)) {
-//            notify(notificationId, builder.build())
-//        }
-
+                    // Notify using the NotificationManager
+                    notifManager.notify(notifId, builder.build())
+                }
+            })
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "MyChannel"
-            val descriptionText = "My Notification Channel"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("MyChannelId", name, importance).apply {
-                description = descriptionText
-            }
-
-            val notificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
 
 }
