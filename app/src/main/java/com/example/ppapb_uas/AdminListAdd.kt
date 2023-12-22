@@ -33,8 +33,8 @@ class AdminListAdd : AppCompatActivity() {
     private lateinit var storageReference: StorageReference
     private lateinit var imageUri: Uri
 
-    private val channelId = "NOTIFICATION_CHANNEL_ID"
-    private val notifId = 90
+    private val channelId = "SimpleNotificationChannel"
+    private val notificationId = 1
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -50,8 +50,6 @@ class AdminListAdd : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminListAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
 
         binding.adminListAddButton.setOnClickListener {
             uploadData(imageUri)
@@ -87,7 +85,7 @@ class AdminListAdd : AppCompatActivity() {
                             binding.adminListAddAuthor.text!!.clear()
                             binding.adminListAddDescription.text!!.clear()
 
-                            notifWithImage(imageUrl.toString())
+
                             startActivity(Intent(this,AdminListMain::class.java))
                             Toast.makeText(this, "Data Uploaded Successfully", Toast.LENGTH_SHORT).show()
                         }
@@ -102,36 +100,4 @@ class AdminListAdd : AppCompatActivity() {
             Toast.makeText(this, "Please fill in all fields and select an image", Toast.LENGTH_SHORT).show()
         }
     }
-
-    private fun notifWithImage(downloadUrl: String) {
-        val notifManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        // Download the image from Firebase Storage using Glide or any other image loading library
-        Glide.with(this@AdminListAdd)
-            .asBitmap()
-            .load(downloadUrl) // Use the downloadUrl here
-            .into(object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
-                ) {
-                    // Build the notification with the downloaded image
-                    val builder = NotificationCompat.Builder(this@AdminListAdd, channelId)
-                        .setSmallIcon(R.drawable.baseline_notifications_24)
-                        .setContentTitle("Tontonin")
-                        .setContentText("Images updated successfully")
-                        .setStyle(
-                            NotificationCompat.BigPictureStyle()
-                                .bigPicture(resource)
-                        )
-                        .setAutoCancel(true)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-                    // Notify using the NotificationManager
-                    notifManager.notify(notifId, builder.build())
-                }
-            })
-    }
-
-
 }
